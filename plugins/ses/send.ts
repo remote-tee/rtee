@@ -3,9 +3,9 @@ import _ from "lodash";
 import * as Handlebars from "handlebars";
 
 const region = "us-east-1";
-const subject = ``;
-const htmlBody = ``;
-const textBody = ``;
+const subject = `rtee: new data available`;
+const htmlBody = `<h1>You have new data from rtee</h1><pre>{{raw}}</pre>`;
+const textBody = `New data from rtee: {{raw}}`;
 
 export interface Context {
   client: SESv2Client;
@@ -14,14 +14,10 @@ export interface Context {
 }
 
 export interface Args {
-  /**
-   * Hostname for the target SMTP server
-   */
   region?: string;
   accessKeyId: string;
   secretAccessKey: string;
 
-  // Templating
   from: string;
   to: string;
   subject?: string;
@@ -30,10 +26,10 @@ export interface Args {
 }
 
 export function init(args: Args): Destination {
-  args.subject ||= subject;
+  args.subject  ||= subject;
   args.htmlBody ||= htmlBody;
   args.textBody ||= textBody;
-  args.region ||= region;
+  args.region   ||= region;
 
   let client = new SESv2Client({
     region,

@@ -6,9 +6,6 @@ import * as ses from "./plugins/ses/send"
     secretAccessKey: '<secret>',
     from: 'Test Form <notifications@email.formulate.dev>',
     to: 'tim@formulate.dev',
-    htmlBody: '<h1>TEST!</h1><pre>{{raw}}</pre>',
-    textBody: "TEST! {{raw}}",
-    subject: "NEW DATA AVAILABLE"
   }
 
   let destination = ses.init(args);
