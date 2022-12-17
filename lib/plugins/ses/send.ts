@@ -1,24 +1,21 @@
 import { SendEmailCommand, SESv2Client } from "@aws-sdk/client-sesv2";
-import _ from "lodash";
 import * as Handlebars from "handlebars";
+import * as plugin from '../types';
 
 const region = "us-east-1";
 const subject = `rtee: new data available`;
 const htmlBody = `<h1>You have new data from rtee</h1><pre>{{raw}}</pre>`;
 const textBody = `New data from rtee: {{raw}}`;
 
-export const description = `Send email via Amazon SES.
+export const description = `Send email via Amazon SES.`;
 
-Get your access keys here.
-`;
-
-export interface Context {
+export interface Context extends plugin.Context {
   client: SESv2Client;
   html: HandlebarsTemplateDelegate;
   text: HandlebarsTemplateDelegate;
 }
 
-export interface Args {
+export interface Args extends plugin.Args {
   /**
    * Testing this feature
    */
@@ -53,17 +50,18 @@ export function init(args: Args): Destination {
   return new Destination({ client, html, text }, args);
 }
 
-class Destination {
+class Destination extends plugin.Destination {
   context: Context;
   args: Args;
 
   constructor(context: Context, args: Args) {
+    super();
     this.context = context;
     this.args = args;
   }
 
-  async send(data: object | string) {
-    data = _.isString(data) ? { raw: data } : data;
+  async send(raw: string) {
+    let data = { raw };
 
     let command = new SendEmailCommand({
       FromEmailAddress: this.args.from,

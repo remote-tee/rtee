@@ -1,18 +1,1 @@
-{
-  "ses/send": {
-    "title": "ses/send",
-    "description": "Send email via Amazon SES.\n\nGet your access keys here.",
-    "type": "object",
-    "required": ["accessKeyId", "secretAccessKey", "from", "to"],
-    "properties": {
-      "region": { "type": "string", "description": "Testing this feature" },
-      "accessKeyId": { "type": "string" },
-      "secretAccessKey": { "type": "string" },
-      "from": { "type": "string" },
-      "to": { "type": "string" },
-      "subject": { "type": "string" },
-      "htmlBody": { "type": "string" },
-      "textBody": { "type": "string" }
-    }
-  }
-}
+{"ses/send":{"path":"lib/plugins/ses/send","schema":{"title":"ses/send","description":"Send email via Amazon SES.\n\nGet your access keys here.","type":"object","required":["accessKeyId","secretAccessKey","from","to"],"properties":{"region":{"type":"string","description":"Testing this feature"},"accessKeyId":{"type":"string"},"secretAccessKey":{"type":"string"},"from":{"type":"string"},"to":{"type":"string"},"subject":{"type":"string"},"htmlBody":{"type":"string"},"textBody":{"type":"string"}}}}}

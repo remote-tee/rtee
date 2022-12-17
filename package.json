@@ -1,16 +1,17 @@
 {
   "name": "rtee",
   "version": "0.0.1",
-  "bin": "index.ts",
+  "bin": "index.js",
   "main": "index.ts",
   "scripts": {
-    "build": "tsc && pkg -t node18 -o dist/rtee build/index.js",
+    "build": "tsc && pkg -t node18 build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "AGPL",
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.231.0",
     "@types/lodash": "^4.14.191",
+    "chalk": "^4.1.2",
     "commander": "^9.4.1",
     "handlebars": "^4.7.7",
     "lodash": "^4.17.21",
@@ -21,5 +22,9 @@
     "@types/node": "^18.11.15",
     "@types/yargs": "^17.0.17",
     "ts-morph": "^17.0.1"
+  },
+  "pkg": {
+    "assets": "lib/plugins/**/*.js",
+    "outputPath": "dist"
   }
 }

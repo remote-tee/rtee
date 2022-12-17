@@ -3,12 +3,17 @@ export interface Field {
   type: "string" | "number" | "boolean";
 }
 
-export interface PluginSchema {
+export interface PluginArgs {
   title: string;
   description?: string;
   type: "object";
   required: string[];
   properties: Record<string, Field>;
+}
+
+export interface PluginSchema {
+  schema: PluginArgs;
+  path: string;
 }
 
 export type PluginMap = Record<string, PluginSchema>;

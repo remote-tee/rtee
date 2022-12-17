@@ -19,39 +19,46 @@ async function generatePluginMap() {
     project.getSourceFiles().map(async (file) => {
       let path = file
         .getFilePath()
+        .replace(`${process.cwd()}/`, '')
+        .replace('.ts', '');
+      let name = file
+        .getFilePath()
         .replace(`${process.cwd()}/lib/plugins/`, "")
         .replace(".ts", "");
       let { description } = await import(file.getFilePath());
       let args = file.getInterface("Args");
-      return { path, args, description };
+      return { path, name, args, description };
     })
   );
 
-  let map = plugins.reduce((memo, { path, args, description }) => {
+  let map = plugins.reduce((memo, { path, args, description, name }) => {
     if (!args) {
       return memo;
     }
 
-    memo[path] = {
-      title: path,
-      description: description.trim(),
-      type: "object",
-      required: args
-        .getProperties()
-        .filter((p) => !p.hasQuestionToken())
-        .map((p) => p.getName()),
-      properties: args.getProperties().reduce((memo, p) => {
-        memo[p.getName()] = {
-          type: getTypeName(p.getType()),
-          description:
-            p
-              .getJsDocs()
-              .map((doc) => doc.getInnerText())
-              .join(". ") || undefined,
-        };
+    memo[name] = {
+      path,
+      schema: {
+        title: name,
+        description: description.trim(),
+        type: "object",
+        required: args
+          .getProperties()
+          .filter((p) => !p.hasQuestionToken())
+          .map((p) => p.getName()),
+        properties: args.getProperties().reduce((memo, p) => {
+          memo[p.getName()] = {
+            type: getTypeName(p.getType()),
+            description:
+              p
+                .getJsDocs()
+                .map((doc) => doc.getInnerText())
+                .join(". ") || undefined,
+          };
 
-        return memo;
-      }, {} as Record<string, Field>),
+          return memo;
+        }, {} as Record<string, Field>),
+      }
     };
 
     return memo;

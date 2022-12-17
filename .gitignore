@@ -131,3 +131,6 @@ dist
 
 rtee
 build
+
+build
+.DS_Store
