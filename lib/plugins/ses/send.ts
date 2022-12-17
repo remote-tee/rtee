@@ -7,6 +7,11 @@ const subject = `rtee: new data available`;
 const htmlBody = `<h1>You have new data from rtee</h1><pre>{{raw}}</pre>`;
 const textBody = `New data from rtee: {{raw}}`;
 
+export const description = `Send email via Amazon SES.
+
+Get your access keys here.
+`;
+
 export interface Context {
   client: SESv2Client;
   html: HandlebarsTemplateDelegate;
@@ -14,6 +19,9 @@ export interface Context {
 }
 
 export interface Args {
+  /**
+   * Testing this feature
+   */
   region?: string;
   accessKeyId: string;
   secretAccessKey: string;
