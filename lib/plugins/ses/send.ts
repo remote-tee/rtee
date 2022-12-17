@@ -34,10 +34,10 @@ export interface Args {
 }
 
 export function init(args: Args): Destination {
-  args.subject  ||= subject;
+  args.subject ||= subject;
   args.htmlBody ||= htmlBody;
   args.textBody ||= textBody;
-  args.region   ||= region;
+  args.region ||= region;
 
   let client = new SESv2Client({
     region,
@@ -56,7 +56,7 @@ export function init(args: Args): Destination {
 class Destination {
   context: Context;
   args: Args;
-  
+
   constructor(context: Context, args: Args) {
     this.context = context;
     this.args = args;
@@ -67,7 +67,7 @@ class Destination {
 
     let command = new SendEmailCommand({
       FromEmailAddress: this.args.from,
-      Destination: { ToAddresses: [this.args.to], },
+      Destination: { ToAddresses: [this.args.to] },
       Content: {
         Simple: {
           Subject: { Data: this.args.subject, Charset: "UTF-8" },
