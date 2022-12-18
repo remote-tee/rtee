@@ -1,3 +1,5 @@
+import { Storage } from "./storage";
+
 export abstract class Destination {
   abstract send(data: string): Promise<void>;
 }
@@ -6,5 +8,5 @@ export interface Context { }
 
 export interface Plugin {
   description: string;
-  init: (args: Args) => Destination;
+  init: (args: Args, storage: Storage) => Promise<Destination>;
 }

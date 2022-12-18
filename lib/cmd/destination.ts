@@ -8,6 +8,7 @@ import pluginMap from "../../data/plugin-map.json";
 import { DATA_DIR, DATA_FILE } from '../const';
 import { PluginMap } from "../plugin-map/types";
 import { loadPlugin } from "../plugin-map/util";
+import { LocalFileStorage } from '../plugins/storage';
 
 const add = (program: yargs.Argv) => {
   program
@@ -29,9 +30,6 @@ const add = (program: yargs.Argv) => {
 
       });
     }, async (argv) => {
-      // Load this plugin just so we fail-fast if the plugin doesn't
-      // exist or the loader is having a bad day.
-      await loadPlugin(v.path);
       let args = _.pick(argv, _.keys(v.schema.properties));
       let name = argv.name as string || `${k.replace("/", '-')}-${_.random(0xAAAAAA, 0xFFFFFF).toString(16)}`;
       let dir = path.join(DATA_DIR, name);
@@ -43,6 +41,11 @@ const add = (program: yargs.Argv) => {
 
       fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(path.join(dir, DATA_FILE), JSON.stringify({ args, plugin: k }));
+
+      // Plugins can perform one-time initialization in `init` (say by writing to `Storage`)
+      // as well as per-run initialization.
+      let plugin = await loadPlugin(v.path);
+      await plugin.init(args, new LocalFileStorage(name));
 
       console.log(chalk.green('Destination', chalk.bold(name), 'created!'))
     });

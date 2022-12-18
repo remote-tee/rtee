@@ -6,6 +6,7 @@ import { exit } from "process";
 import yargs from "yargs";
 import { DATA_DIR, DATA_FILE } from "../const";
 import { loadPlugin } from "../plugin-map/util";
+import { LocalFileStorage } from "../plugins/storage";
 
 
 
@@ -32,7 +33,7 @@ export function init(program: yargs.Argv) {
 
       let { plugin: pluginName, args } = JSON.parse(readFileSync(filename, 'utf-8'));
       let plugin = await loadPlugin(`lib/plugins/${pluginName}`);
-      return plugin.init(args);
+      return plugin.init(args, new LocalFileStorage(dl));
     }));
 
     let input = readFileSync(0, 'utf-8')

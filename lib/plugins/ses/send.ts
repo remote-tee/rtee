@@ -1,5 +1,6 @@
 import { SendEmailCommand, SESv2Client } from "@aws-sdk/client-sesv2";
 import * as Handlebars from "handlebars";
+import { Storage } from "../storage";
 import * as plugin from '../types';
 
 const region = "us-east-1";
@@ -28,7 +29,7 @@ export interface Args extends plugin.Args {
   textBody?: string;
 }
 
-export function init(args: Args): Destination {
+export async function init(args: Args, storage: Storage): Promise<Destination> {
   args.subject ||= subject;
   args.htmlBody ||= htmlBody;
   args.textBody ||= textBody;
