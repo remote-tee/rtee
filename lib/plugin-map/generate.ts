@@ -13,7 +13,7 @@ async function generatePluginMap() {
   }
 
   const project = new Project();
-  project.addSourceFilesAtPaths("lib/plugins/**/*.ts");
+  project.addSourceFilesAtPaths("lib/plugins/*/**/*.ts");
 
   let plugins = await Promise.all(
     project.getSourceFiles().map(async (file) => {
@@ -25,8 +25,9 @@ async function generatePluginMap() {
         .getFilePath()
         .replace(`${process.cwd()}/lib/plugins/`, "")
         .replace(".ts", "");
-      let { description } = await import(file.getFilePath());
       let args = file.getInterface("Args");
+      let destination = file.getClass("Destination");
+      let description = destination?.getJsDocs().map(d => d.getInnerText()).join(", ");
       return { path, name, args, description };
     })
   );
@@ -40,7 +41,7 @@ async function generatePluginMap() {
       path,
       schema: {
         title: name,
-        description: description.trim(),
+        description: description?.trim(),
         type: "object",
         required: args
           .getProperties()

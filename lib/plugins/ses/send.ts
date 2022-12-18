@@ -7,8 +7,6 @@ const subject = `rtee: new data available`;
 const htmlBody = `<h1>You have new data from rtee</h1><pre>{{raw}}</pre>`;
 const textBody = `New data from rtee: {{raw}}`;
 
-export const description = `Send email via Amazon SES.`;
-
 export interface Context extends plugin.Context {
   client: SESv2Client;
   html: HandlebarsTemplateDelegate;
@@ -50,6 +48,9 @@ export function init(args: Args): Destination {
   return new Destination({ client, html, text }, args);
 }
 
+/**
+ * Send email via Amazon SES.
+ */
 class Destination extends plugin.Destination {
   context: Context;
   args: Args;
