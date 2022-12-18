@@ -1,8 +1,6 @@
 import chalk from "chalk";
 import { existsSync, readFileSync } from "fs";
 import _ from 'lodash';
-import { stdin as input } from 'node:process';
-import * as readline from 'node:readline/promises';
 import path from "path";
 import { exit } from "process";
 import yargs from "yargs";
@@ -37,12 +35,10 @@ export function init(program: yargs.Argv) {
       return plugin.init(args);
     }));
 
-    const rl = readline.createInterface({ input });
+    let input = readFileSync(0, 'utf-8')
 
-    rl.on('line', (line) => {
-      for (let destination of destinations) {
-        destination.send(line);
-      }
-    });
+    for (let destination of destinations) {
+      destination.send(input);
+    }
   });
 }
